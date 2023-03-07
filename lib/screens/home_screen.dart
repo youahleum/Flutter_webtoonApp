@@ -3,31 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:webtoon_app/models/webtoon_model.dart';
 import 'package:webtoon_app/services/api_service.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+   HomeScreen({Key? key}) : super(key: key);
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  List<WebtoonModel> webtoons=[];
-  bool isLoading = true;
-
-  void waitForWebToons() async{
-    webtoons = await ApiService.getTodaysToons();
-    isLoading=false;
-    setState(() {
-      
-    });
-  }
-
-  // 데이터를 받아오는 함수를 호출
-  @override
-  void initState() {
-    super.initState();
-    waitForWebToons();
-  }
+  Future<List<WebtoonModel>> webtoons=ApiService.getTodaysToons();
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +24,24 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
+      ),
+      body: FutureBuilder(
+        future: webtoons,
+        builder: (context, snapshot){
+          if(snapshot.hasData){
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index){
+                var webtoon=snapshot.data![index];
+                return Text(webtoon.title);
+              },
+            );
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }
