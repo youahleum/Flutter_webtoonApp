@@ -4,9 +4,9 @@ import 'package:webtoon_app/models/webtoon_model.dart';
 import 'package:webtoon_app/services/api_service.dart';
 
 class HomeScreen extends StatelessWidget {
-   HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
 
-  Future<List<WebtoonModel>> webtoons=ApiService.getTodaysToons();
+  Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +27,18 @@ class HomeScreen extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: webtoons,
-        builder: (context, snapshot){
-          if(snapshot.hasData){
-            return ListView.builder(
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: snapshot.data!.length,
-              itemBuilder: (context, index){
-                var webtoon=snapshot.data![index];
+              itemBuilder: (context, index) {
+                var webtoon = snapshot.data![index];
                 return Text(webtoon.title);
               },
+              separatorBuilder: (context, index) => SizedBox(
+                width: 20,
+              ),
             );
           }
           return Center(
