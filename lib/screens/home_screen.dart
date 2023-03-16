@@ -32,9 +32,9 @@ class HomeScreen extends StatelessWidget {
           if (snapshot.hasData) {
             return Column(
               children: [
-                SizedBox(
-                  height: 50,
-                ),
+                // SizedBox(
+                //   height: 50,
+                // ),
                 Expanded(
                   child: makeList(snapshot),
                 ),
@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
 
   ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
     return ListView.separated(
-      scrollDirection: Axis.horizontal,
+      scrollDirection: Axis.vertical,
       itemCount: snapshot.data!.length,
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       itemBuilder: (context, index) {
@@ -59,7 +59,7 @@ class HomeScreen extends StatelessWidget {
         return Webtoon(title:webtoon.title,thumb:webtoon.thumb,id:webtoon.id,);
       },
       separatorBuilder: (context, index) => SizedBox(
-        width: 40,
+        height: 40,
       ),
     );
   }
